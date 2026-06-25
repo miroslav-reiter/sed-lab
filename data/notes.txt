@@ -1,0 +1,7 @@
+INFO Pouzivatel miros sa prihlasil
+ERROR Nepodarilo sa pripojit na server 10.0.0.5
+DEBUG Token abc123 bol nacitany
+WARNING Port 8080 je uz pouzity
+Kontakt: admin@example.com
+ID objednavky: 20240625
+error male pismena pre testovanie
