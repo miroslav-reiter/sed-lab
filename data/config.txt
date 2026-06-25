@@ -1,0 +1,10 @@
+# Demo konfiguracia pre sed
+app_name=sed-lab
+enabled=false
+port=8080
+log_level=debug
+
+# Databaza
+db_host=localhost
+db_port=5432
+# db_password=secret
