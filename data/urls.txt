@@ -1,0 +1,5 @@
+http://example.com
+http://vitaacademy.sk/kurzy
+https://github.com/miroslav-reiter/sed-lab
+http://localhost:8080/api
+ftp://old.example.com/archive
