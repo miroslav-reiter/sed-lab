@@ -1,0 +1,6 @@
+Linux je vhodný na prácu v termináli.
+sed upravuje textový tok.
+Linux sed vie rýchlo nahrádzať text.
+grep hľadá riadky, sed ich upravuje.
+awk pracuje so stĺpcami a reportmi.
+Linux Linux Linux
