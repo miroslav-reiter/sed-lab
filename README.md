@@ -1,4 +1,4 @@
-# 🧪 sed-lab
+# 🧪 Online Kurz Sed (sed-lab)
 
 Testovací repozitár na praktické trénovanie príkazu `sed` v Linuxe, hlavne v Kali Linuxe a Ubuntu Linuxe.
 
