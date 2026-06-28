@@ -1,7 +1,6 @@
 # 🧪 Online Kurz Sed (sed-lab)
 
 Testovací repozitár na praktické trénovanie príkazu `sed` v Linuxe, hlavne v Kali Linuxe a Ubuntu Linuxe.
-
 Repozitár je určený na precvičenie práce s textom, riadkami, regulárnymi výrazmi, nahrádzaním, mazaním, výpismi a jednoduchými transformáciami priamo v termináli.
 
 ## 📌 Čo je sed
@@ -23,7 +22,6 @@ Cieľom bolo odstrániť potrebu interaktívneho editora a umožniť **skriptova
 ### ⚙️ Ako sed funguje
 
 `sed` spracováva vstup takto:
-
 - načíta riadok zo vstupu
 - porovná ho so vzormi (pattern)
 - aplikuje príkazy (action)
@@ -153,49 +151,41 @@ cat log.txt | grep "ERROR" | sed 's/ERROR/WARNING/' | awk '{ print $1, $3 }'
 | `=` | číslovanie riadkov | `sed '=' file` |
 | `G` | pridá prázdny riadok | `sed G file` |
 
-## 🔒 Bezpečnostné poznámky (rozšírené)
+## 🪟 Microsoft Windows podpora pre sed 
 
-Používanie `sed` v praxi má riziká najmä pri automatizácii.
+`sed` nie je natívny nástroj Windows prostredia. Funguje iba cez kompatibilné Unix vrstvy alebo porty. V praxi to znamená, že správanie sa môže líšiť podľa použitého prostredia, najmä pri práci so súbormi, cestami a koncami riadkov.
+---
 
-### Kritické riziká:
+## 🔧 Varianty spustenia sed na Windows
 
-- `-i` bez backupu môže zničiť dáta
-- nesprávny regex môže prepísať celý súbor
-- pipeline môže prepísať vstup bez návratu
+| Prostredie | Hodnotenie | Charakteristika | Poznámka |
+|------------|------------|-----------------|----------|
+| WSL (Windows Subsystem for Linux) | ⭐⭐⭐⭐⭐ | plnohodnotný Linux | najstabilnejšie a odporúčané riešenie |
+| Cygwin | ⭐⭐⭐⭐ | Unix emulačná vrstva | vysoká kompatibilita, ale vyššia režijná záťaž |
+| MSYS2 | ⭐⭐⭐⭐ | vývojárske Unix prostredie | vhodné pre build toolchainy a skripty |
+| Git Bash | ⭐⭐⭐ | minimal Unix shell | vhodné len na základné príkazy |
+| natívny sed port (napr. GnuWin32) | ⭐⭐ | Windows build sed | obmedzená kompatibilita a časté rozdiely |
 
-### Best practices:
+---
 
-- vždy používať `.bak`:
+## ⚠️ Dôležité technické rozdiely
+
+### 1. CRLF vs LF (koniec riadkov)
+
+Windows používa:
+- CRLF (`\r\n`)
+
+Linux/Unix používa:
+- LF (`\n`)
+
+📌 Dopady v `sed`:
+- `sed` môže vidieť `\r` ako súčasť textu
+- regexy môžu zlyhávať (`$`, `.` a podobne)
+- porovnávanie reťazcov nemusí sedieť
+
+✔️ Riešenie:
 ```bash
-sed -i.bak 's/a/b/' file
-```
-
-- testovať bez `-i`
-- používať `--sandbox` pri neznámych skriptoch
-- logy nikdy neupravovať priamo v produkcii
-
-### Atomicita
-sed nie je transakčný nástroj → neexistuje rollback
-
-## 🪟 Windows podpora (rozšírené)
-
-`sed` nie je natívny Windows nástroj.
-
-### Varianty:
-
-| Prostredie | Hodnotenie | Poznámka |
-|---|---|---|
-| WSL | ⭐⭐⭐⭐⭐ | najlepšia voľba |
-| Cygwin | ⭐⭐⭐⭐ | Unix vrstva |
-| MSYS2 | ⭐⭐⭐⭐ | vývojárske prostredie |
-| Git Bash | ⭐⭐⭐ | základné použitie |
-| natívny sed | ⭐⭐ | obmedzené |
-
-### Dôležité rozdiely:
-
-- CRLF vs LF
-- Windows cesty vs Linux `/`
-- quoting rozdiely
+sed 's/\r$//' file.txt
 
 ## 🎬 Praktické príklady vo videu
 
@@ -299,15 +289,14 @@ Pri práci so `sed` často spracovávame logy, konfigurácie a systémové texto
 input="hodnota"
 sed "s|${input}|REPLACEMENT|g" file.txt
 ```
-
+### Atomicita
+sed nie je transakčný nástroj → neexistuje rollback
 ---
 
 ## 🧳 Poznámka k prenositeľnosti
 
 Riešenia so `sed` sa snažíme písať tak, aby boli kompatibilné naprieč GNU `sed` aj BSD `sed` (macOS).
-
 Ak používame rozšírenia GNU `sed`, explicitne to označujeme, pretože nie sú prenositeľné do všetkých Unix/Linux systémov.
-
 
 ## 📚 Užitočné odkazy a zdroje
 
