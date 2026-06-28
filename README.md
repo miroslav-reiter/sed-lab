@@ -151,10 +151,8 @@ cat log.txt | grep "ERROR" | sed 's/ERROR/WARNING/' | awk '{ print $1, $3 }'
 | `=` | číslovanie riadkov | `sed '=' file` |
 | `G` | pridá prázdny riadok | `sed G file` |
 
-## 🪟 Microsoft Windows podpora pre sed 
-
-`sed` nie je natívny nástroj Windows prostredia. Funguje iba cez kompatibilné Unix vrstvy alebo porty. V praxi to znamená, že správanie sa môže líšiť podľa použitého prostredia, najmä pri práci so súbormi, cestami a koncami riadkov.
----
+## 🪟 Microsoft Windows podpora pre sed   
+`sed` nie je natívny nástroj Windows prostredia. Funguje iba cez kompatibilné Unix vrstvy alebo porty. V praxi to znamená, že správanie sa môže líšiť podľa použitého prostredia, najmä pri práci so súbormi, cestami a koncami riadkov.  
 
 ## 🔧 Varianty spustenia sed na Windows
 
@@ -291,7 +289,6 @@ sed "s|${input}|REPLACEMENT|g" file.txt
 ```
 ### Atomicita
 sed nie je transakčný nástroj → neexistuje rollback
----
 
 ## 🧳 Poznámka k prenositeľnosti
 
