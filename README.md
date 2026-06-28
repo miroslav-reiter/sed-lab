@@ -77,56 +77,92 @@ Rozdiel nie je v syntaxi, ale v:
 
 ### `-n` (silent mode)
 Zabraňuje automatickému výpisu riadkov.
-Používa sa s `p`:
+
+Používa sa na selektívny výstup:
 ```bash
 sed -n '1p' file
 ```
 
 ### `-e` (expression)
-Umožňuje viac príkazov:
+Umožňuje reťaziť viac príkazov:
 ```bash
 sed -e 's/a/b/' -e 's/c/d/' file
 ```
 
 ### `-f` (file script)
-Načítanie skriptu zo súboru:
+Načítanie príkazov zo súboru:
 ```bash
 sed -f script.sed file
 ```
 
-### `-i` (in-place)
-Úprava súboru:
+### `-i` (in-place editácia)
+Mení súbor priamo:
 ```bash
 sed -i.bak 's/a/b/' file
 ```
-⚠️ nebezpečné bez zálohy
+⚠️ vždy používať zálohu
 
-### `-E` / `-r`
-Rozšírené regex:
+### `-E` / `-r` (extended regex)
+Zapína rozšírené regulárne výrazy:
 ```bash
 sed -E 's/[0-9]+/X/' file
 ```
 
 ### `--posix`
-Zakáže GNU rozšírenia → kompatibilita
+Vypína GNU rozšírenia a zaisťuje kompatibilitu
 
 ### `--sandbox`
-Zakáže nebezpečné operácie (r/w/spawn)
+Obmedzuje operácie (bez zápisu a systémových zásahov)
 
 ### `--debug`
-Zobrazí vykonávanie krok po kroku
+Zobrazuje krokové vykonávanie príkazu
 
 ### `--version`
-Zobrazí verziu sed
+Zobrazí verziu programu
 
 ### `--help`
-Zobrazí pomoc
+Zobrazí kompletnú pomoc
+
+## 🧪 Detailný rozpis výstupu `sed --help`
+
+Výstup `sed` helpu má pevne definovanú štruktúru:
+
+### 1. Usage sekcia
+```text
+Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+```
+
+Vysvetlenie:
+- `OPTION` → všetky prepínače (`-n`, `-i`, `-e`)
+- `...` → možnosť opakovania parametrov
+- `{script-only-if-no-other-script}` → sed skript, ak nie je použitý `-e` alebo `-f`
+- `[input-file]...` → jeden alebo viac vstupných súborov
+
+### 2. Spracovanie vstupu
+- ak nie je súbor → číta zo STDIN (klávesnica / pipe)
+- ak je viac súborov → spracúva ich sekvenčne
+
+### 3. Behaviorálne pravidlá
+- bez `-n` sa každý riadok automaticky vypíše
+- s `-n` sa vypisujú iba riadené výstupy (`p`)
+
+### 4. Kombinácia skriptov
+- `-e` → inline skript
+- `-f` → skript zo súboru
+- viac `-e` sa správa ako reťazenie príkazov
+
+### 5. Praktický význam pre prax
+Tento výstup je dôležitý pri:
+- debugovaní sed skriptov
+- tvorbe automatizácie
+- pochopení pipeline spracovania dát
 
 ## 🧠 Zhrnutie
 
 - Kali a Ubuntu používajú GNU sed
-- rozdiel je minimálny
-- najdôležitejšie sú `-n`, `s///`, `-i`, regex
+- rozdiely sú minimálne
+- kľúčové je pochopiť `-n`, `-i`, `-e`, regex
+- help output je štruktúrovaný a predvídateľný
 
 ## 📚 Ostatné sekcie
 
