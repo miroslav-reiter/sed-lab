@@ -1,19 +1,18 @@
-# 🧪 Linux sed – praktické príklady (cheat sheet)
+# Linux sed – praktické príklady (cheat sheet)
 
-## 📌 Čo je sed
-`sed` (Stream Editor) je nástroj na **automatické spracovanie textu v prúde**. Používa sa na transformácie riadkov bez otvárania editora.
+## Čo je sed
+sed (Stream Editor) je nástroj na automatické spracovanie textu v prúde. Používa sa na transformácie riadkov bez interaktívneho editora.
 
 Typické použitie:
 - úprava konfigurácií
 - spracovanie logov
-- automatizované skripty (DevOps)
+- automatizácia v shell skriptoch (DevOps)
 
 ---
 
-# 1️⃣ 🟢 Základné použitie sed
+## 1. Základné použitie sed
 
-### 🔹 Použitie
-Overenie funkčnosti alebo prázdny príkaz (žiadna transformácia).
+Použitie bez transformácie alebo test funkčnosti.
 
 ```bash
 sed '' /etc/passwd
@@ -25,10 +24,9 @@ echo "toto je vstup" | sed ''
 
 ---
 
-# 2️⃣ 🗑️ Mazanie riadkov (delete)
+## 2. Mazanie riadkov (delete)
 
-### 🔹 Použitie
-Odstraňovanie riadkov podľa čísla alebo rozsahu.
+Použitie: odstránenie riadkov podľa čísla alebo rozsahu.
 
 ```bash
 sed 'd' /etc/passwd
@@ -38,12 +36,12 @@ sed 'd' /etc/passwd
 ```bash
 sed '1d' /etc/passwd
 ```
-➡ vymaže 1. riadok
+➡ vymaže prvý riadok
 
 ```bash
 sed '3d' /etc/passwd
 ```
-➡ vymaže 3. riadok
+➡ vymaže tretí riadok
 
 ```bash
 sed '2,5d' /etc/passwd
@@ -57,10 +55,9 @@ sed '1,10d;15,$d' /etc/passwd
 
 ---
 
-# 3️⃣ 📤 Výpis riadkov (print)
+## 3. Výpis riadkov (print)
 
-### 🔹 Použitie
-Filtrovanie výstupu bez úpravy súboru.
+Použitie: filtrovanie výstupu bez zmeny súboru.
 
 ```bash
 sed -n '2,5p' /etc/passwd
@@ -74,10 +71,9 @@ sed -n '/root/p' /etc/passwd
 
 ---
 
-# 4️⃣ 🔁 Náhrada textu (substitution)
+## 4. Náhrada textu (substitution)
 
-### 🔹 Použitie
-Základná transformácia textu pomocou `s///`.
+Použitie: transformácia textu pomocou s///
 
 ```bash
 sed 's/root/admin/' /etc/passwd
@@ -92,53 +88,45 @@ sed 's/root/admin/g' /etc/passwd
 ```bash
 sed 's/root/admin/2' /etc/passwd
 ```
-➡ nahradí 2. výskyt v riadku
+➡ nahradí druhý výskyt
 
 ```bash
 sed 's/root/admin/2g' /etc/passwd
 ```
-➡ nahradí od 2. výskytu ďalej
+➡ nahradí od druhého výskytu ďalej
 
 ---
 
-# 5️⃣ ✏️ In-place úprava súboru
+## 5. In-place úprava súboru
 
-### ⚠️ Pozor
-Prepíše súbor priamo.
+⚠️ Pozor: mení súbor na disku
 
 ```bash
 sed -i 's/root/admin/g' /etc/passwd
 ```
-➡ úprava súboru na disku
 
 ```bash
 sed -i.bak '1d' /etc/passwd
 ```
-➡ vytvorí zálohu `.bak`
+➡ vytvorí zálohu
 
 ---
 
-# 6️⃣ ➕ Vkladanie a pridávanie riadkov
-
-### 🔹 Použitie
-Vkladanie textu do konkrétnej pozície.
+## 6. Vkladanie a pridávanie riadkov
 
 ```bash
-sed '3i\NOVÝ RIADOK' /etc/passwd
+sed '3i\\NOVÝ RIADOK' /etc/passwd
 ```
-➡ vloží pred 3. riadok
+➡ vloží pred riadok 3
 
 ```bash
-sed '3a\NOVÝ RIADOK' /etc/passwd
+sed '3a\\NOVÝ RIADOK' /etc/passwd
 ```
-➡ pridá za 3. riadok
+➡ pridá za riadok 3
 
 ---
 
-# 7️⃣ ⚙️ Viac príkazov naraz
-
-### 🔹 Použitie
-Kombinovanie operácií.
+## 7. Viac príkazov naraz
 
 ```bash
 sed -e '1,10d' -e '15,$d' /etc/passwd
@@ -150,10 +138,7 @@ sed '1,10d;15,$d' /etc/passwd
 
 ---
 
-# 8️⃣ 🧠 Rozšírené regex operácie
-
-### 🔹 Použitie
-Pokročilé pattern matching a delimitery.
+## 8. Rozšírené regex
 
 ```bash
 sed 's#/home#/root#' /etc/passwd
@@ -164,15 +149,12 @@ sed 's%/home%/root%' /etc/passwd
 ```
 
 ```bash
-sed -E 's/(root)(.*)/\1-user-\2/' /etc/passwd
+sed -E 's/(root)(.*)/\\1-user-\\2/' /etc/passwd
 ```
 
 ---
 
-# 9️⃣ 🎯 Print iba pri substitúcii
-
-### 🔹 Použitie
-Zobrazenie len upravených riadkov.
+## 9. Print iba pri substitúcii
 
 ```bash
 sed -n 's/root/admin/gp' /etc/passwd
@@ -180,18 +162,15 @@ sed -n 's/root/admin/gp' /etc/passwd
 
 ---
 
-# 🔟 🔠 Transformácie textu
-
-### 🔹 Použitie
-Práca s case a skupinami.
+## 10. Transformácie textu
 
 ```bash
-sed -E 's/(ro)ot/\U\1\E-ADMIN/' /etc/passwd
+sed -E 's/(ro)ot/\\U\\1\\E-ADMIN/' /etc/passwd
 ```
 
 ---
 
-## ⚠️ Poznámky
-- `/etc/passwd` je bezpečný systémový súbor (bez hesiel)
-- `sed -i` môže poškodiť systémové súbory → používať opatrne
+## Poznámky
+- /etc/passwd je bezpečný systémový súbor (neobsahuje heslá)
+- sed -i môže byť nebezpečný pri systémových súboroch
 - rozdiely existujú medzi GNU sed a BSD sed
