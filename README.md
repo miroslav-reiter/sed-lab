@@ -248,7 +248,65 @@ sed '=' data/employees.txt | sed 'N;s/\n/ /'
 ```bash
 sed 's/^root/ADMIN/' data/passwd.sample
 ```
+````markdown
+## ⚠️ Typické chyby v sed a správne použitie
 
+### Nesprávne použitie `-e` a skriptu
+
+❌ Nesprávne:
+```bash
+sed 's/foo/bar/' -e file.txt
+````
+
+✔️ Správne:
+
+```bash
+sed -e 's/foo/bar/' file.txt
+```
+
+---
+
+### Nesprávne použitie premenných v shelli (rozšírenie bez úniku)
+
+❌ Nesprávne:
+
+```bash
+pattern="foo"
+sed "s/$pattern/bar/" file.txt
+```
+
+✔️ Správne:
+
+```bash
+pattern="foo"
+sed "s/${pattern}/bar/g" file.txt
+```
+
+---
+
+## 🔒 Bezpečnostné poznámky
+
+Pri práci so `sed` často spracovávame logy, konfigurácie a systémové textové súbory. Preto dodržiavame tieto pravidlá:
+
+* Nespúšťame neznáme `sed` skripty bez kontroly obsahu.
+* Pri spracovaní citlivých dát anonymizujeme IP adresy, e-maily, tokeny a identifikátory.
+* Nepracujeme priamo na produkčných súboroch bez zálohy.
+* Pri úpravách súborov používame bezpečný režim zápisu (dočasný súbor + nahradenie).
+
+✔️ Bezpečnejší prístup pri vkladaní hodnôt zo shellu do `sed`:
+
+```bash
+input="hodnota"
+sed "s|${input}|REPLACEMENT|g" file.txt
+```
+
+---
+
+## 🧳 Poznámka k prenositeľnosti
+
+Riešenia so `sed` sa snažíme písať tak, aby boli kompatibilné naprieč GNU `sed` aj BSD `sed` (macOS).
+
+Ak používame rozšírenia GNU `sed`, explicitne to označujeme, pretože nie sú prenositeľné do všetkých Unix/Linux systémov.
 
 
 ## 📚 Užitočné odkazy a zdroje
