@@ -87,13 +87,31 @@ sed -n '1,10p' file
 - úpravy konfigurácií,
 - pipeline spracovanie dát.
 
-## 🧩 sed vs grep vs awk
+## 🧩 grep vs sed vs awk (praktická architektúra spracovania textu)
 
-| Nástroj | Použitie |
-|---|---|
-| grep | vyhľadávanie |
-| sed | transformácia textu |
-| awk | stĺpcové spracovanie |
+| Nástroj | Úloha v pipeline | Model správania | Typický výstup |
+|---|---|---|---|
+| grep | filtrácia | boolean matcher (true/false) | subset riadkov |
+| sed | transformácia | stream editor (line-by-line edit) | upravené riadky |
+| awk | analýza | pattern-action programovací model | report / agregácia |
+
+### 🔁 Pipeline realita
+
+```bash
+cat log.txt | grep "ERROR" | sed 's/ERROR/WARNING/' | awk '{ print $1, $3 }'
+```
+
+### 🧠 rozhodovací model
+
+- použij `grep`, keď chceš **nájsť alebo filtrovať riadky**
+- použij `sed`, keď chceš **prepísať text**
+- použij `awk`, keď chceš **pracovať so štruktúrou (stĺpce, logika, výpočty)**
+
+### ⚠️ kľúčový rozdiel
+
+- grep = „má to tam byť?“
+- sed = „ako to prepíšem?“
+- awk = „čo z toho viem vypočítať?“
 
 ## 🧠 Sed cheat sheet
 
