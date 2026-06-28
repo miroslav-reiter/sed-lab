@@ -1,14 +1,4 @@
-# Linux sed – praktické príklady (lab štýl)
-
-## Čo je sed
-sed (Stream Editor) je nástroj na spracovanie textu v prúde. Umožňuje transformácie riadkov bez interaktívneho editora a je vhodný pre automatizáciu v shell skriptoch.
-
-Typické použitie:
-- spracovanie konfigurácií
-- analýza logov
-- DevOps automatizácia
-
----
+# Linux sed – praktické príklady
 
 ## 1. Základný výpis súboru
 ```bash
