@@ -139,31 +139,90 @@ Vysvetlenie:
 - `[input-file]...` → jeden alebo viac vstupných súborov
 
 ### 2. Spracovanie vstupu
-- ak nie je súbor → číta zo STDIN (klávesnica / pipe)
-- ak je viac súborov → spracúva ich sekvenčne
+- ak nie je súbor → číta zo STDIN
+- ak je viac súborov → sekvenčné spracovanie
 
 ### 3. Behaviorálne pravidlá
-- bez `-n` sa každý riadok automaticky vypíše
-- s `-n` sa vypisujú iba riadené výstupy (`p`)
+- bez `-n` sa každý riadok vypíše
+- s `-n` iba riadený výstup (`p`)
 
 ### 4. Kombinácia skriptov
-- `-e` → inline skript
-- `-f` → skript zo súboru
-- viac `-e` sa správa ako reťazenie príkazov
+- `-e` inline príkazy
+- `-f` skripty zo súboru
+- viac `-e` = reťazenie
 
-### 5. Praktický význam pre prax
-Tento výstup je dôležitý pri:
-- debugovaní sed skriptov
-- tvorbe automatizácie
-- pochopení pipeline spracovania dát
+## 🧾 Cheat Sheet (rýchly prehľad)
+
+### Nahrádzanie
+```bash
+sed 's/stary/novy/' file
+sed 's/stary/novy/g' file
+```
+
+### Mazanie
+```bash
+sed '2d' file
+sed '/pattern/d' file
+```
+
+### Výpis
+```bash
+sed -n '1p' file
+sed -n '/pattern/p' file
+```
+
+### Insert / Append
+```bash
+sed '1i TEXT' file
+sed '1a TEXT' file
+```
+
+### Replace celý riadok
+```bash
+sed 's/.*/NEW LINE/' file
+```
+
+## 🔒 Bezpečnostné poznámky
+
+- `-i` používať iba so zálohou (`.bak`)
+- nikdy nespúšťať sed priamo na systémové konfigurácie bez kontroly
+- logy a configy vždy najprv čítať bez úprav
+- `--sandbox` používať pri testovaní
+- pipeline príkazy môžu prepísať dáta nevratne
+
+## 🪟 Windows podpora
+
+`sed` nie je natívne vo Windows.
+
+Odporúčané riešenia:
+
+- WSL (Ubuntu) – odporúčané
+- Cygwin
+- Git Bash
+- MSYS2
+- natívny sed/gawk build
+
+Rozdiely:
+
+- Windows cesty vs Linux `/`
+- CRLF vs LF
+- rôzne shell správanie
+
+## 📚 Užitočné odkazy a zdroje
+
+- GNU sed manual: https://www.gnu.org/software/sed/
+- Open Group POSIX: https://pubs.opengroup.org/onlinepubs/9699919799/
+- GNU documentation: https://www.gnu.org/
+
+## 🗣️ Výslovnosť a pôvod
+
+- `sed` = stream editor
+- výslovnosť: „sed“ /sɛd/
+- vznik v Unix prostredí Bell Labs
 
 ## 🧠 Zhrnutie
 
-- Kali a Ubuntu používajú GNU sed
-- rozdiely sú minimálne
-- kľúčové je pochopiť `-n`, `-i`, `-e`, regex
-- help output je štruktúrovaný a predvídateľný
-
-## 📚 Ostatné sekcie
-
-(pokračujú cheat sheet, príklady, cvičenia...)
+- sed = stream editor
+- pracuje riadok po riadku
+- ideálny pre transformácie textu
+- kľúčové sú `s///`, `-n`, `-i`
