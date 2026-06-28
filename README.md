@@ -6,15 +6,74 @@ Repozitár je určený na precvičenie práce s textom, riadkami, regulárnymi v
 
 ## 📌 Čo je sed
 
-`sed` znamená **stream editor**. Je to príkazový nástroj na spracovanie textového toku.
+`sed` (stream editor) je príkazový textový nástroj určený na **automatizované spracovanie a transformáciu textu po riadkoch**. Pracuje ako stream procesor – vstup číta postupne, riadok po riadku, aplikuje pravidlá a výsledok posiela na výstup.
 
-Typický spôsob práce:
+### 🧠 Pôvod a história
+
+`sed` vznikol v prostredí Bell Labs ako súčasť Unixového ekosystému.
+- Autor: **Lee E. McMahon**
+- Obdobie vzniku: **1973–1974**
+- Inšpirácia: textový editor `ed`
+
+Cieľom bolo odstrániť potrebu interaktívneho editora a umožniť **skriptovateľné úpravy textu v pipeline (automatizovane)**.
+
+`sed` sa stal súčasťou Unix filozofie:
+> „rob jednu vec a rob ju dobre“ – spracovanie textových tokov
+
+### ⚙️ Ako sed funguje
+
+`sed` spracováva vstup takto:
+
+- načíta riadok zo vstupu
+- porovná ho so vzormi (pattern)
+- aplikuje príkazy (action)
+- vypíše upravený riadok
+
+### 📌 Základná syntax
 
 ```bash
-sed 'príkaz' súbor
+sed [OPTIONS] 'SCRIPT' subor
 ```
 
-`sed` načíta riadok, aplikuje naň zadaný príkaz a výsledok vypíše na štandardný výstup. Pôvodný súbor sa nemení, pokiaľ nepoužijeme voľbu `-i`.
+### 🧪 Základné formy príkazu
+
+```bash
+sed 's/stary/novy/' subor.txt
+```
+
+alebo explicitnejší tvar:
+
+```bash
+sed -e 's/stary/novy/' subor.txt
+```
+
+### 🧩 Štruktúra sed skriptu
+
+```text
+[address] command
+```
+
+Kde:
+- `address` → riadok alebo rozsah (napr. 1,5 alebo /error/)
+- `command` → operácia (s, d, p, i, a, c)
+
+### 🧪 Príklady adresovania
+
+- `5d` → zmaže 5. riadok
+- `1,10d` → zmaže rozsah riadkov
+- `/error/d` → zmaže riadky obsahujúce pattern
+
+### ⚙️ Typický workflow
+
+```bash
+cat file | sed 's/foo/bar/'
+```
+
+alebo
+
+```bash
+sed -n '1,10p' file
+```
 
 ## 🎯 Na čo sa sed používa v praxi
 
@@ -42,7 +101,7 @@ sed 'príkaz' súbor
 | Príkaz | Popis | Príklad |
 |---|---|---|
 | `s/old/new/` | nahradí prvý výskyt | `sed 's/a/b/' file` |
-| `s/old/new/g` | nahradí všetky výskyty | `sed 's/a/b/g' file` |
+| `s/old/new/g` | všetky výskyty | `sed 's/a/b/g' file` |
 | `s/^start/BEGIN/` | začiatok riadku | `sed 's/^a/X/' file` |
 | `s/end$/FIN/` | koniec riadku | `sed 's/x$/y/' file` |
 
@@ -124,9 +183,8 @@ sed nie je transakčný nástroj → neexistuje rollback
 
 Použiť WSL pre výučbu a prax.
 
-## 📚 Užitočné odkazy a zdroje (rozšírené)
+## 📚 Užitočné odkazy a zdroje
 
 - GNU sed: https://www.gnu.org/software/sed/
 - POSIX: https://pubs.opengroup.org/onlinepubs/9699919799/
 - GNU manuals: https://www.gnu.org/
-
