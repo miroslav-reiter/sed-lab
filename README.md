@@ -183,7 +183,8 @@ Linux/Unix používa:
 
 ✔️ Riešenie:
 ```bash
-sed 's/\r$//' file.txt
+sed 's/\r$//' file.txt  
+```
 
 ## 🎬 Praktické príklady vo videu
 
