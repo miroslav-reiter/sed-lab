@@ -35,6 +35,18 @@ Cieľom bolo odstrániť potrebu interaktívneho editora a umožniť **skriptova
 sed [OPTIONS] 'SCRIPT' subor
 ```
 
+### 🧪 Základné formy príkazu
+
+```bash
+sed 's/stary/novy/' subor.txt
+```
+
+alebo explicitnejší tvar:
+
+```bash
+sed -e 's/stary/novy/' subor.txt
+```
+
 ### 🧩 Štruktúra sed skriptu
 
 ```text
@@ -65,6 +77,8 @@ sed -n '1,10p' file
 
 ## 🎯 Na čo sa sed používa v praxi
 
+`sed` používame hlavne na rýchle textové úpravy v termináli alebo shell skriptoch.
+
 - nahrádzanie textu,
 - výpis riadkov,
 - filtrovanie,
@@ -77,76 +91,111 @@ sed -n '1,10p' file
 
 | Nástroj | Úloha v pipeline | Model správania | Typický výstup |
 |---|---|---|---|
-| grep | filtrácia | boolean matcher | subset riadkov |
-| sed | transformácia | stream editor | upravené riadky |
-| awk | analýza | pattern-action | report/aggregácia |
+| grep | filtrácia | boolean matcher (true/false) | subset riadkov |
+| sed | transformácia | stream editor (line-by-line edit) | upravené riadky |
+| awk | analýza | pattern-action programovací model | report / agregácia |
 
-### 🔁 Pipeline
+### 🔁 Pipeline realita
+
 ```bash
 cat log.txt | grep "ERROR" | sed 's/ERROR/WARNING/' | awk '{ print $1, $3 }'
 ```
 
-### 🧠 rozhodovanie
-- grep = filtrovanie
-- sed = transformácia
-- awk = analýza
+### 🧠 rozhodovací model
 
-## 🧾 Cheat Sheet
+- použij `grep`, keď chceš **nájsť alebo filtrovať riadky**
+- použij `sed`, keď chceš **prepísať text**
+- použij `awk`, keď chceš **pracovať so štruktúrou (stĺpce, logika, výpočty)**
+
+### ⚠️ kľúčový rozdiel
+
+- grep = „má to tam byť?“
+- sed = „ako to prepíšem?“
+- awk = „čo z toho viem vypočítať?“
+
+## 🧠 Sed cheat sheet
 
 ### 🔁 Nahrádzanie
 | Príkaz | Popis | Príklad |
 |---|---|---|
-| `s/old/new/` | prvý výskyt | `sed 's/a/b/' file` |
+| `s/old/new/` | nahradí prvý výskyt | `sed 's/a/b/' file` |
 | `s/old/new/g` | všetky výskyty | `sed 's/a/b/g' file` |
-| `s/^start/BEGIN/` | začiatok | `sed 's/^a/X/' file` |
-| `s/end$/FIN/` | koniec | `sed 's/x$/y/' file` |
+| `s/^start/BEGIN/` | začiatok riadku | `sed 's/^a/X/' file` |
+| `s/end$/FIN/` | koniec riadku | `sed 's/x$/y/' file` |
 
-### 🧭 Riadky
+### 🧭 Adresovanie riadkov
 | Príkaz | Popis | Príklad |
 |---|---|---|
-| `5d` | zmaže riadok | `sed '5d' file` |
-| `1,10d` | rozsah | `sed '1,10d' file` |
-| `/error/d` | pattern | `sed '/error/d' file` |
-| `/a/,/b/d` | rozsah | `sed '/start/,/end/d' file` |
+| `5d` | zmaže riadok 5 | `sed '5d' file` |
+| `1,10d` | zmaže rozsah | `sed '1,10d' file` |
+| `/error/d` | podľa vzoru | `sed '/error/d' file` |
+| `/a/,/b/d` | rozsah vzorov | `sed '/start/,/end/d' file` |
 
 ### 📤 Výpis
 | Príkaz | Popis | Príklad |
 |---|---|---|
-| `-n p` | vypne auto print | `sed -n 'p' file` |
-| `1p` | prvý riadok | `sed -n '1p' file` |
-| `/err/p` | pattern | `sed -n '/err/p' file` |
+| `-n 'p'` | vypne auto print | `sed -n 'p' file` |
+| `-n '1p'` | prvý riadok | `sed -n '1p' file` |
+| `/pattern/p` | podľa vzoru | `sed -n '/err/p' file` |
 
-### ✏️ Editácie
+### ✏️ Vkladanie / mazanie / zmena
 | Príkaz | Popis | Príklad |
 |---|---|---|
-| `i` | insert | `sed '1i A' file` |
-| `a` | append | `sed '1a B' file` |
-| `c` | change | `sed '3c X' file` |
-| `d` | delete | `sed '2d' file` |
+| `i TEXT` | vloží pred riadok | `sed '1i A' file` |
+| `a TEXT` | vloží za riadok | `sed '1a B' file` |
+| `c TEXT` | nahradí riadok | `sed '3c X' file` |
+| `d` | zmaže riadok | `sed '2d' file` |
 
-### 🔧 Pokročilé
+### 🔧 Pokročilé operácie
 | Príkaz | Popis | Príklad |
 |---|---|---|
-| `-E` | regex | `sed -E 's/[0-9]+/X/'` |
-| `=` | čísla riadkov | `sed '=' file` |
-| `G` | prázdny riadok | `sed G file` |
+| `-E 's/[0-9]+/NUM/g'` | regex replace | `sed -E 's/[0-9]+/X/g' file` |
+| `=` | číslovanie riadkov | `sed '=' file` |
+| `G` | pridá prázdny riadok | `sed G file` |
 
-## 🔒 Bezpečnosť
-- `-i` môže zničiť dáta
-- používať `.bak`
-- testovať bez editácie
-- žiadny rollback
+## 🔒 Bezpečnostné poznámky (rozšírené)
 
-## 🪟 Windows
-- WSL (odporúčané)
-- Cygwin
-- MSYS2
-- Git Bash
+Používanie `sed` v praxi má riziká najmä pri automatizácii.
 
-## 📚 Zdroje
-- GNU sed
-- POSIX
-- GNU manuals
+### Kritické riziká:
+
+- `-i` bez backupu môže zničiť dáta
+- nesprávny regex môže prepísať celý súbor
+- pipeline môže prepísať vstup bez návratu
+
+### Best practices:
+
+- vždy používať `.bak`:
+```bash
+sed -i.bak 's/a/b/' file
+```
+
+- testovať bez `-i`
+- používať `--sandbox` pri neznámych skriptoch
+- logy nikdy neupravovať priamo v produkcii
+
+### Atomicita
+sed nie je transakčný nástroj → neexistuje rollback
+
+## 🪟 Windows podpora (rozšírené)
+
+`sed` nie je natívny Windows nástroj.
+
+### Varianty:
+
+| Prostredie | Hodnotenie | Poznámka |
+|---|---|---|
+| WSL | ⭐⭐⭐⭐⭐ | najlepšia voľba |
+| Cygwin | ⭐⭐⭐⭐ | Unix vrstva |
+| MSYS2 | ⭐⭐⭐⭐ | vývojárske prostredie |
+| Git Bash | ⭐⭐⭐ | základné použitie |
+| natívny sed | ⭐⭐ | obmedzené |
+
+### Dôležité rozdiely:
+
+- CRLF vs LF
+- Windows cesty vs Linux `/`
+- quoting rozdiely
 
 ## 🎬 Praktické príklady vo videu
 
@@ -199,3 +248,25 @@ sed '=' data/employees.txt | sed 'N;s/\n/ /'
 ```bash
 sed 's/^root/ADMIN/' data/passwd.sample
 ```
+
+
+
+## 📚 Užitočné odkazy a zdroje
+
+- GNU sed manuál: https://www.gnu.org/software/sed/manual/sed.html
+- GNU sed projekt: https://www.gnu.org/software/sed/
+- The Open Group Base Specifications, Issue 8: https://pubs.opengroup.org/onlinepubs/9799919799/
+- POSIX sed špecifikácia: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/sed.html
+- GNU sed zdrojový kód (Git): https://git.savannah.gnu.org/cgit/sed.git
+- Sed tutorial (intro a príklady): https://www.grymoire.com/Unix/Sed.html
+- The AWK and Sed Programming (referenčné zdroje): https://awk.dev/
+
+### 📖 Odporúčané knihy o sed
+
+| Kniha | Autori | Prečo je užitočná |
+|------|--------|-------------------|
+| sed & awk, Second Edition | Dale Dougherty, Arnold Robbins | Klasická kombinovaná kniha pre text processing v Unixe. Silná praktická časť pre sed aj awk. |
+| sed and awk Pocket Reference | Arnold Robbins | Rýchla referenčná príručka pre sed a awk syntax. Vhodná ako „cheat sheet“. |
+| UNIX Text Processing | Dale Dougherty | Klasika pre prácu s textom v Unix/Linux prostredí, vrátane sed pipeline prístupov. |
+| The UNIX Programming Environment | Brian W. Kernighan, Rob Pike | Fundamentálny pohľad na Unix filozofiu vrátane stream editovania pomocou sed. |
+| Mastering Regular Expressions | Jeffrey E. F. Friedl | Nepriamo k sed – kľúčové pre regex, ktoré sed intenzívne používa. |
