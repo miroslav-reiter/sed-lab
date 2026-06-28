@@ -1,176 +1,251 @@
-# Linux sed – praktické príklady (cheat sheet)
+# Linux sed – praktické príklady (lab štýl)
 
 ## Čo je sed
-sed (Stream Editor) je nástroj na automatické spracovanie textu v prúde. Používa sa na transformácie riadkov bez interaktívneho editora.
+sed (Stream Editor) je nástroj na spracovanie textu v prúde. Umožňuje transformácie riadkov bez interaktívneho editora a je vhodný pre automatizáciu v shell skriptoch.
 
 Typické použitie:
-- úprava konfigurácií
-- spracovanie logov
-- automatizácia v shell skriptoch (DevOps)
+- spracovanie konfigurácií
+- analýza logov
+- DevOps automatizácia
 
 ---
 
-## 1. Základné použitie sed
-
-Použitie bez transformácie alebo test funkčnosti.
-
+## 1. Základný výpis súboru
 ```bash
 sed '' /etc/passwd
 ```
 
+**Vysvetlenie:** sed prečíta vstupný súbor a nevykoná žiadnu transformáciu.
+
+**Použitie:** test funkčnosti alebo pipeline validácia.
+
+---
+
+## 2. Spracovanie vstupu cez pipe
 ```bash
 echo "toto je vstup" | sed ''
 ```
 
+**Vysvetlenie:** vstup z STDIN je spracovaný bez úprav.
+
+**Použitie:** testovanie správania v pipe reťazcoch.
+
 ---
 
-## 2. Mazanie riadkov (delete)
-
-Použitie: odstránenie riadkov podľa čísla alebo rozsahu.
-
+## 3. Vymazanie všetkých riadkov
 ```bash
 sed 'd' /etc/passwd
 ```
-➡ vymaže všetky riadky
 
+**Vysvetlenie:** príkaz `d` odstráni všetky riadky zo vstupu.
+
+**Použitie:** filtrovanie obsahu alebo test delete operácie.
+
+---
+
+## 4. Vymazanie prvého riadku
 ```bash
 sed '1d' /etc/passwd
 ```
-➡ vymaže prvý riadok
 
+**Vysvetlenie:** odstráni iba prvý riadok súboru.
+
+**Použitie:** odstránenie hlavičky dát.
+
+---
+
+## 5. Vymazanie konkrétneho riadku
 ```bash
 sed '3d' /etc/passwd
 ```
-➡ vymaže tretí riadok
 
+**Vysvetlenie:** odstráni tretí riadok vstupu.
+
+**Použitie:** odstránenie konkrétnej položky v zozname.
+
+---
+
+## 6. Vymazanie rozsahu riadkov
 ```bash
 sed '2,5d' /etc/passwd
 ```
-➡ vymaže riadky 2 až 5
 
+**Vysvetlenie:** odstráni riadky od 2 po 5.
+
+**Použitie:** odstránenie blokov dát.
+
+---
+
+## 7. Vymazanie viacerých rozsahov
 ```bash
 sed '1,10d;15,$d' /etc/passwd
 ```
-➡ vymaže rozsahy 1–10 a 15 až koniec
+
+**Vysvetlenie:** kombinuje viac delete operácií.
+
+**Použitie:** čistenie štruktúrovaných dát.
 
 ---
 
-## 3. Výpis riadkov (print)
-
-Použitie: filtrovanie výstupu bez zmeny súboru.
-
+## 8. Výpis rozsahu riadkov
 ```bash
 sed -n '2,5p' /etc/passwd
 ```
-➡ zobrazí riadky 2–5
 
+**Vysvetlenie:** vypíše iba vybrané riadky.
+
+**Použitie:** extrakcia častí súboru.
+
+---
+
+## 9. Výpis podľa vzoru
 ```bash
 sed -n '/root/p' /etc/passwd
 ```
-➡ zobrazí riadky obsahujúce "root"
+
+**Vysvetlenie:** filtruje riadky obsahujúce text root.
+
+**Použitie:** vyhľadávanie v konfiguráciách.
 
 ---
 
-## 4. Náhrada textu (substitution)
-
-Použitie: transformácia textu pomocou s///
-
+## 10. Náhrada prvého výskytu
 ```bash
 sed 's/root/admin/' /etc/passwd
 ```
-➡ nahradí prvý výskyt v riadku
 
-```bash
-sed 's/root/admin/g' /etc/passwd
-```
-➡ nahradí všetky výskyty
+**Vysvetlenie:** nahradí prvý výskyt v každom riadku.
 
-```bash
-sed 's/root/admin/2' /etc/passwd
-```
-➡ nahradí druhý výskyt
-
-```bash
-sed 's/root/admin/2g' /etc/passwd
-```
-➡ nahradí od druhého výskytu ďalej
+**Použitie:** základná transformácia textu.
 
 ---
 
-## 5. In-place úprava súboru
+## 11. Globálna náhrada
+```bash
+sed 's/root/admin/g' /etc/passwd
+```
 
-⚠️ Pozor: mení súbor na disku
+**Vysvetlenie:** nahradí všetky výskyty v riadku.
 
+**Použitie:** hromadná zmena hodnôt.
+
+---
+
+## 12. Náhrada druhého výskytu
+```bash
+sed 's/root/admin/2' /etc/passwd
+```
+
+**Vysvetlenie:** upraví iba druhý výskyt v riadku.
+
+**Použitie:** selektívne transformácie.
+
+---
+
+## 13. In-place úprava
 ```bash
 sed -i 's/root/admin/g' /etc/passwd
 ```
 
+**Vysvetlenie:** priamo upravuje súbor na disku.
+
+**Použitie:** automatizované opravy konfigurácií.
+
+---
+
+## 14. In-place so zálohou
 ```bash
 sed -i.bak '1d' /etc/passwd
 ```
-➡ vytvorí zálohu
+
+**Vysvetlenie:** vytvorí zálohu pred úpravou.
+
+**Použitie:** bezpečné modifikácie systémových súborov.
 
 ---
 
-## 6. Vkladanie a pridávanie riadkov
-
+## 15. Vloženie riadku pred pozíciu
 ```bash
 sed '3i\\NOVÝ RIADOK' /etc/passwd
 ```
-➡ vloží pred riadok 3
 
-```bash
-sed '3a\\NOVÝ RIADOK' /etc/passwd
-```
-➡ pridá za riadok 3
+**Vysvetlenie:** vloží text pred tretí riadok.
+
+**Použitie:** dopĺňanie konfigurácie.
 
 ---
 
-## 7. Viac príkazov naraz
+## 16. Pridanie riadku za pozíciu
+```bash
+sed '3a\\NOVÝ RIADOK' /etc/passwd
+```
 
+**Vysvetlenie:** pridá text za tretí riadok.
+
+**Použitie:** rozšírenie dátových blokov.
+
+---
+
+## 17. Viac príkazov pomocou -e
 ```bash
 sed -e '1,10d' -e '15,$d' /etc/passwd
 ```
 
+**Vysvetlenie:** umožňuje reťazenie operácií.
+
+**Použitie:** komplexné čistenie dát.
+
+---
+
+## 18. Viac príkazov cez bodkočiarku
 ```bash
 sed '1,10d;15,$d' /etc/passwd
 ```
 
+**Vysvetlenie:** alternatívny zápis viacerých operácií.
+
+**Použitie:** skriptovanie bez viacerých -e.
+
 ---
 
-## 8. Rozšírené regex
-
+## 19. Zmena delimitera v regex
 ```bash
 sed 's#/home#/root#' /etc/passwd
 ```
 
-```bash
-sed 's%/home%/root%' /etc/passwd
-```
+**Vysvetlenie:** umožňuje použiť iný oddeľovač.
 
-```bash
-sed -E 's/(root)(.*)/\\1-user-\\2/' /etc/passwd
-```
+**Použitie:** čitateľnejšie regexy s cestami.
 
 ---
 
-## 9. Print iba pri substitúcii
+## 20. Zachytávanie skupín (regex)
+```bash
+sed -E 's/(root)(.*)/\1-user-\2/' /etc/passwd
+```
 
+**Vysvetlenie:** využíva capture groups v extended regex.
+
+**Použitie:** pokročilé transformácie textu.
+
+---
+
+## 21. Výpis iba pri substitúcii
 ```bash
 sed -n 's/root/admin/gp' /etc/passwd
 ```
 
+**Vysvetlenie:** vypíše iba riadky, kde nastala zmena.
+
+**Použitie:** kontrola zmien v dátach.
+
 ---
 
-## 10. Transformácie textu
-
+## 22. Transformácia pomocou regex rozšírení
 ```bash
-sed -E 's/(ro)ot/\\U\\1\\E-ADMIN/' /etc/passwd
+sed -E 's/(ro)ot/\U\1\E-ADMIN/' /etc/passwd
 ```
 
----
+**Vysvetlenie:** upravuje case a text pomocou regex operácií.
 
-## Poznámky
-- /etc/passwd je bezpečný systémový súbor (neobsahuje heslá)
-- sed -i môže byť nebezpečný pri systémových súboroch
-- rozdiely existujú medzi GNU sed a BSD sed
+**Použitie:** normalizácia a formátovanie výstupov.
