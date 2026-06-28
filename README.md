@@ -36,7 +36,7 @@ sed 'príkaz' súbor
 | sed | transformácia textu |
 | awk | stĺpcové spracovanie |
 
-## 🧾 Cheat Sheet (TABULKOVÁ FORMA)
+## 🧠 Sed cheat sheet
 
 ### 🔁 Nahrádzanie
 | Príkaz | Popis | Príklad |
