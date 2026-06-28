@@ -237,7 +237,7 @@ sed '=' data/employees.txt | sed 'N;s/\n/ /'
 ```bash
 sed 's/^root/ADMIN/' data/passwd.sample
 ```
-````markdown
+
 ## ⚠️ Typické chyby v sed a správne použitie
 
 ### Nesprávne použitie `-e` a skriptu
