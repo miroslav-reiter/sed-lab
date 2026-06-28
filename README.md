@@ -75,154 +75,154 @@ Rozdiel nie je v syntaxi, ale v:
 
 ## ⚙️ Detailné vysvetlenie najdôležitejších prepínačov
 
-### `-n` (silent mode)
-Zabraňuje automatickému výpisu riadkov.
+### `-n`
+Selektívny výstup (potláča automatický print).
 
-Používa sa na selektívny výstup:
-```bash
-sed -n '1p' file
-```
+### `-e`
+Viac príkazov v jednom behu.
 
-### `-e` (expression)
-Umožňuje reťaziť viac príkazov:
-```bash
-sed -e 's/a/b/' -e 's/c/d/' file
-```
+### `-f`
+Skript zo súboru.
 
-### `-f` (file script)
-Načítanie príkazov zo súboru:
-```bash
-sed -f script.sed file
-```
+### `-i`
+In-place úprava (kritické: vždy backup).
 
-### `-i` (in-place editácia)
-Mení súbor priamo:
-```bash
-sed -i.bak 's/a/b/' file
-```
-⚠️ vždy používať zálohu
-
-### `-E` / `-r` (extended regex)
-Zapína rozšírené regulárne výrazy:
-```bash
-sed -E 's/[0-9]+/X/' file
-```
+### `-E` / `-r`
+Extended regex (lepší pattern matching).
 
 ### `--posix`
-Vypína GNU rozšírenia a zaisťuje kompatibilitu
+Striktná kompatibilita.
 
 ### `--sandbox`
-Obmedzuje operácie (bez zápisu a systémových zásahov)
+Bezpečnostne obmedzené vykonávanie.
 
 ### `--debug`
-Zobrazuje krokové vykonávanie príkazu
+Tracing vykonávania.
 
-### `--version`
-Zobrazí verziu programu
+### `--version` / `--help`
+Meta informácie.
 
-### `--help`
-Zobrazí kompletnú pomoc
+## 🧾 Cheat Sheet (rozšírený prehľad)
 
-## 🧪 Detailný rozpis výstupu `sed --help`
-
-Výstup `sed` helpu má pevne definovanú štruktúru:
-
-### 1. Usage sekcia
-```text
-Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+### 🔁 Nahrádzanie
+```bash
+sed 's/old/new/' file
+sed 's/old/new/g' file
+sed 's/^start/BEGIN/' file
+sed 's/end$/FIN/' file
 ```
 
-Vysvetlenie:
-- `OPTION` → všetky prepínače (`-n`, `-i`, `-e`)
-- `...` → možnosť opakovania parametrov
-- `{script-only-if-no-other-script}` → sed skript, ak nie je použitý `-e` alebo `-f`
-- `[input-file]...` → jeden alebo viac vstupných súborov
-
-### 2. Spracovanie vstupu
-- ak nie je súbor → číta zo STDIN
-- ak je viac súborov → sekvenčné spracovanie
-
-### 3. Behaviorálne pravidlá
-- bez `-n` sa každý riadok vypíše
-- s `-n` iba riadený výstup (`p`)
-
-### 4. Kombinácia skriptov
-- `-e` inline príkazy
-- `-f` skripty zo súboru
-- viac `-e` = reťazenie
-
-## 🧾 Cheat Sheet (rýchly prehľad)
-
-### Nahrádzanie
+### 🧭 Adresovanie riadkov
 ```bash
-sed 's/stary/novy/' file
-sed 's/stary/novy/g' file
+sed '5d' file
+sed '1,10d' file
+sed '/error/d' file
+sed '/start/,/end/d' file
 ```
 
-### Mazanie
+### 📤 Výpis
 ```bash
-sed '2d' file
-sed '/pattern/d' file
-```
-
-### Výpis
-```bash
+sed -n 'p' file
 sed -n '1p' file
 sed -n '/pattern/p' file
 ```
 
-### Insert / Append
+### ✏️ Vkladanie
 ```bash
 sed '1i TEXT' file
 sed '1a TEXT' file
+sed '3c REPLACE LINE' file
 ```
 
-### Replace celý riadok
+### 🔧 Pokročilé operácie
 ```bash
-sed 's/.*/NEW LINE/' file
+sed -E 's/[0-9]+/NUM/g' file
+sed -n '=' file
+sed G file
 ```
 
-## 🔒 Bezpečnostné poznámky
+## 🔒 Bezpečnostné poznámky (rozšírené)
 
-- `-i` používať iba so zálohou (`.bak`)
-- nikdy nespúšťať sed priamo na systémové konfigurácie bez kontroly
-- logy a configy vždy najprv čítať bez úprav
-- `--sandbox` používať pri testovaní
-- pipeline príkazy môžu prepísať dáta nevratne
+Používanie `sed` v praxi má riziká najmä pri automatizácii.
 
-## 🪟 Windows podpora
+### Kritické riziká:
 
-`sed` nie je natívne vo Windows.
+- `-i` bez backupu môže zničiť dáta
+- nesprávny regex môže prepísať celý súbor
+- pipeline môže prepísať vstup bez návratu
 
-Odporúčané riešenia:
+### Best practices:
 
-- WSL (Ubuntu) – odporúčané
-- Cygwin
-- Git Bash
-- MSYS2
-- natívny sed/gawk build
+- vždy používať `.bak`:
+```bash
+sed -i.bak 's/a/b/' file
+```
 
-Rozdiely:
+- testovať bez `-i`
+- používať `--sandbox` pri neznámych skriptoch
+- logy nikdy neupravovať priamo v produkcii
 
-- Windows cesty vs Linux `/`
+### Atomicita
+sed nie je transakčný nástroj → neexistuje rollback
+
+## 🪟 Windows podpora (rozšírené)
+
+`sed` nie je natívny Windows nástroj.
+
+### Varianty:
+
+| Prostredie | Hodnotenie | Poznámka |
+|---|---|---|
+| WSL | ⭐⭐⭐⭐⭐ | najlepšia voľba |
+| Cygwin | ⭐⭐⭐⭐ | Unix vrstva |
+| MSYS2 | ⭐⭐⭐⭐ | vývojárske prostredie |
+| Git Bash | ⭐⭐⭐ | základné použitie |
+| natívny sed | ⭐⭐ | obmedzené |
+
+### Dôležité rozdiely:
+
 - CRLF vs LF
-- rôzne shell správanie
+- Windows cesty vs Linux `/`
+- quoting rozdiely (PowerShell vs Bash)
+- výkon (WSL výrazne lepší)
 
-## 📚 Užitočné odkazy a zdroje
+### Mapovanie diskov:
 
-- GNU sed manual: https://www.gnu.org/software/sed/
-- Open Group POSIX: https://pubs.opengroup.org/onlinepubs/9699919799/
-- GNU documentation: https://www.gnu.org/
+- WSL: `/mnt/c/...`
+- Cygwin: `/cygdrive/c/...`
+
+### Odporúčanie:
+
+Použiť WSL pre školenia a produkčné demo.
+
+## 📚 Užitočné odkazy a zdroje (rozšírené)
+
+### Dokumentácia:
+
+- GNU sed: https://www.gnu.org/software/sed/
+- POSIX: https://pubs.opengroup.org/onlinepubs/9699919799/
+- GNU manuals: https://www.gnu.org/
+
+### Knihy:
+
+- Aho, Kernighan, Weinberger – *The AWK Programming Language*
+- Dale Dougherty, Arnold Robbins – *sed & awk*
+- Arnold Robbins – *Effective awk Programming*
+
+### Praktické zdroje:
+
+- Linux man pages: `man sed`
+- GNU coreutils docs
 
 ## 🗣️ Výslovnosť a pôvod
 
-- `sed` = stream editor
-- výslovnosť: „sed“ /sɛd/
-- vznik v Unix prostredí Bell Labs
+- sed = stream editor
+- výslovnosť: /sɛd/
+- Unix Bell Labs
 
 ## 🧠 Zhrnutie
 
 - sed = stream editor
-- pracuje riadok po riadku
-- ideálny pre transformácie textu
-- kľúčové sú `s///`, `-n`, `-i`
+- line-based processing
+- vhodný pre transformácie
+- kľúčové: `s///`, `-i`, regex, pipelines
