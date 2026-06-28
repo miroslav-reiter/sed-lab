@@ -35,174 +35,97 @@ Cieľom bolo odstrániť potrebu interaktívneho editora a umožniť **skriptova
 sed [OPTIONS] 'SCRIPT' subor
 ```
 
-### 🧪 Základné formy príkazu
-
-```bash
-sed 's/stary/novy/' subor.txt
-```
-
-alebo explicitnejší tvar:
-
-```bash
-sed -e 's/stary/novy/' subor.txt
-```
-
 ### 🧩 Štruktúra sed skriptu
 
 ```text
 [address] command
 ```
 
-Kde:
-- `address` → riadok alebo rozsah (napr. 1,5 alebo /error/)
-- `command` → operácia (s, d, p, i, a, c)
+## 🎬 Praktické príklady vo videu
 
-### 🧪 Príklady adresovania
+Táto sekcia obsahuje príkazy vhodné na ukážku vo videu. Používame súbory v priečinku `data/`.
 
-- `5d` → zmaže 5. riadok
-- `1,10d` → zmaže rozsah riadkov
-- `/error/d` → zmaže riadky obsahujúce pattern
+---
 
-### ⚙️ Typický workflow
-
+### 1. Výpis celého súboru
 ```bash
-cat file | sed 's/foo/bar/'
+sed '' data/employees.txt
 ```
+Vypíše celý súbor (sed defaultne tlačí všetky riadky).
 
-alebo
+---
 
+### 2. Výpis prvého slova z riadku
 ```bash
-sed -n '1,10p' file
+sed 's/ .*//' data/employees.txt
 ```
+Odstráni všetko od prvej medzery po koniec riadku.
 
-## 🎯 Na čo sa sed používa v praxi
+---
 
-`sed` používame hlavne na rýchle textové úpravy v termináli alebo shell skriptoch.
-
-- nahrádzanie textu,
-- výpis riadkov,
-- filtrovanie,
-- mazanie,
-- log analýza,
-- úpravy konfigurácií,
-- pipeline spracovanie dát.
-
-## 🧩 grep vs sed vs awk (praktická architektúra spracovania textu)
-
-| Nástroj | Úloha v pipeline | Model správania | Typický výstup |
-|---|---|---|---|
-| grep | filtrácia | boolean matcher (true/false) | subset riadkov |
-| sed | transformácia | stream editor (line-by-line edit) | upravené riadky |
-| awk | analýza | pattern-action programovací model | report / agregácia |
-
-### 🔁 Pipeline realita
-
+### 3. Výpis používateľských mien (formát user:...)
 ```bash
-cat log.txt | grep "ERROR" | sed 's/ERROR/WARNING/' | awk '{ print $1, $3 }'
+sed 's/:.*//' data/passwd.sample
 ```
+Odstráni všetko od dvojbodky – ostane prvé pole.
 
-### 🧠 rozhodovací model
+---
 
-- použij `grep`, keď chceš **nájsť alebo filtrovať riadky**
-- použij `sed`, keď chceš **prepísať text**
-- použij `awk`, keď chceš **pracovať so štruktúrou (stĺpce, logika, výpočty)**
-
-### ⚠️ kľúčový rozdiel
-
-- grep = „má to tam byť?“
-- sed = „ako to prepíšem?“
-- awk = „čo z toho viem vypočítať?“
-
-## 🧠 Sed cheat sheet
-
-### 🔁 Nahrádzanie
-| Príkaz | Popis | Príklad |
-|---|---|---|
-| `s/old/new/` | nahradí prvý výskyt | `sed 's/a/b/' file` |
-| `s/old/new/g` | všetky výskyty | `sed 's/a/b/g' file` |
-| `s/^start/BEGIN/` | začiatok riadku | `sed 's/^a/X/' file` |
-| `s/end$/FIN/` | koniec riadku | `sed 's/x$/y/' file` |
-
-### 🧭 Adresovanie riadkov
-| Príkaz | Popis | Príklad |
-|---|---|---|
-| `5d` | zmaže riadok 5 | `sed '5d' file` |
-| `1,10d` | zmaže rozsah | `sed '1,10d' file` |
-| `/error/d` | podľa vzoru | `sed '/error/d' file` |
-| `/a/,/b/d` | rozsah vzorov | `sed '/start/,/end/d' file` |
-
-### 📤 Výpis
-| Príkaz | Popis | Príklad |
-|---|---|---|
-| `-n 'p'` | vypne auto print | `sed -n 'p' file` |
-| `-n '1p'` | prvý riadok | `sed -n '1p' file` |
-| `/pattern/p` | podľa vzoru | `sed -n '/err/p' file` |
-
-### ✏️ Vkladanie / mazanie / zmena
-| Príkaz | Popis | Príklad |
-|---|---|---|
-| `i TEXT` | vloží pred riadok | `sed '1i A' file` |
-| `a TEXT` | vloží za riadok | `sed '1a B' file` |
-| `c TEXT` | nahradí riadok | `sed '3c X' file` |
-| `d` | zmaže riadok | `sed '2d' file` |
-
-### 🔧 Pokročilé operácie
-| Príkaz | Popis | Príklad |
-|---|---|---|
-| `-E 's/[0-9]+/NUM/g'` | regex replace | `sed -E 's/[0-9]+/X/g' file` |
-| `=` | číslovanie riadkov | `sed '=' file` |
-| `G` | pridá prázdny riadok | `sed G file` |
-
-## 🔒 Bezpečnostné poznámky (rozšírené)
-
-Používanie `sed` v praxi má riziká najmä pri automatizácii.
-
-### Kritické riziká:
-
-- `-i` bez backupu môže zničiť dáta
-- nesprávny regex môže prepísať celý súbor
-- pipeline môže prepísať vstup bez návratu
-
-### Best practices:
-
-- vždy používať `.bak`:
+### 4. Výpis prvých N riadkov (napr. 5)
 ```bash
-sed -i.bak 's/a/b/' file
+sed -n '1,5p' data/employees.txt
 ```
+Používa režim `-n` a explicitný print.
 
-- testovať bez `-i`
-- používať `--sandbox` pri neznámych skriptoch
-- logy nikdy neupravovať priamo v produkcii
+---
 
-### Atomicita
-sed nie je transakčný nástroj → neexistuje rollback
+### 5. Odstránenie prázdnych riadkov
+```bash
+sed '/^$/d' data/log.txt
+```
+Zmaže všetky prázdne riadky.
 
-## 🪟 Windows podpora (rozšírené)
+---
 
-`sed` nie je natívny Windows nástroj.
+### 6. Výpis riadkov obsahujúcich error
+```bash
+sed -n '/error/p' data/log.txt
+```
+Filtruje riadky podľa vzoru.
 
-### Varianty:
+---
 
-| Prostredie | Hodnotenie | Poznámka |
-|---|---|---|
-| WSL | ⭐⭐⭐⭐⭐ | najlepšia voľba |
-| Cygwin | ⭐⭐⭐⭐ | Unix vrstva |
-| MSYS2 | ⭐⭐⭐⭐ | vývojárske prostredie |
-| Git Bash | ⭐⭐⭐ | základné použitie |
-| natívny sed | ⭐⭐ | obmedzené |
+### 7. Nahradenie textu (case replace)
+```bash
+sed 's/error/ERROR/g' data/log.txt
+```
+Zmení všetky výskyty.
 
-### Dôležité rozdiely:
+---
 
-- CRLF vs LF
-- Windows cesty vs Linux `/`
-- quoting rozdiely
+### 8. Odstránenie konkrétneho riadku
+```bash
+sed '3d' data/employees.txt
+```
+Zmaže tretí riadok.
 
-### Odporúčanie:
+---
 
-Použiť WSL pre výučbu a prax.
+### 9. Výpis riadkov s číslovaním
+```bash
+sed '=' data/employees.txt | sed 'N;s/\n/ /'
+```
+Spojí číslo riadku s obsahom.
 
-## 📚 Užitočné odkazy a zdroje
+---
 
-- GNU sed: https://www.gnu.org/software/sed/
-- POSIX: https://pubs.opengroup.org/onlinepubs/9699919799/
-- GNU manuals: https://www.gnu.org/
+### 10. Výmena začiatku riadku
+```bash
+sed 's/^root/ADMIN/' data/passwd.sample
+```
+Zmení prefix riadku.
+
+---
+
+## 🎯 Poznámka
+sed nie je nástroj na prácu so stĺpcami (na to sa používa awk). sed je určený na **line-based transformácie a regex operácie**.
