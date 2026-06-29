@@ -1,3 +1,5 @@
+https://www.vita.sk/
+https://www.it-academy.sk/kontakt/kontaktne-informacie/
 http://example.com
 http://vitaacademy.sk/kurzy
 https://github.com/miroslav-reiter/sed-lab
