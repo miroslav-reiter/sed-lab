@@ -305,6 +305,7 @@ Ak používame rozšírenia GNU `sed`, explicitne to označujeme, pretože nie s
 - GNU sed zdrojový kód (Git): https://git.savannah.gnu.org/cgit/sed.git
 - Sed tutorial (intro a príklady): https://www.grymoire.com/Unix/Sed.html
 - The AWK and Sed Programming (referenčné zdroje): https://awk.dev/
+- Piškvorky (Tic Tac Toe): https://www.mpaoli.net/~michael/bin/ttt
 
 ### 📖 Odporúčané knihy o sed
 
