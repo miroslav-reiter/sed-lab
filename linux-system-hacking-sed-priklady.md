@@ -4,6 +4,44 @@ Tento súbor obsahuje štandardizované príklady použitia nástroja `sed` v Li
 
 ---
 
+## 🧠 Ako čítať tieto SED príkazy
+
+Základný tvar príkazu:
+
+```bash
+sed 'script' subor
+```
+
+### Najdôležitejšie prvky:
+
+| Prvok | Význam |
+|------|--------|
+| `sed` | spustí nástroj sed |
+| `'...'` | sed skript (príkazy v shelli) |
+| `s///` | substitúcia textu |
+| `d` | vymazanie riadku |
+| `p` | výpis riadku |
+| `-n` | vypne automatický výpis |
+| `-e` | pridá výraz do spracovania |
+| `-f` | načíta skript zo súboru |
+| `-E` | extended regex |
+| `^` | začiatok riadku |
+| `$` | koniec riadku |
+| `/pattern/` | regex výber riadkov |
+| `;` | oddelenie viacerých príkazov |
+
+### Dôležitý rozdiel oproti AWK:
+
+| Koncept | sed | awk |
+|--------|-----|-----|
+| model | stream editor | textový jazyk |
+| polia `$1` | ❌ nepoužíva | ✅ používa |
+| riadky | áno | áno |
+| stav | bezstavový | čiastočne stavový |
+| vhodné na | transformácie | analýzu dát |
+
+---
+
 ## 🧠 Model spracovania sed
 
 sed pracuje ako stream editor:
