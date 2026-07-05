@@ -16,7 +16,7 @@ INPUT → PATTERN SPACE → RULE → OUTPUT
 
 ---
 
-## 🧩 Text transformácia
+## 🔁 Text transformácia
 
 **01. Nahradenie reťazca**  
 ```bash
@@ -67,7 +67,7 @@ range addressing (start,end)
 
 ---
 
-## 🧩 Filterovanie riadkov
+## 🔎 Filterovanie riadkov
 
 **05. Filter podľa vzoru**  
 ```bash
@@ -105,7 +105,7 @@ filter komentárov
 
 ---
 
-## 🧩 Výpis riadkov
+## 👀 Výpis riadkov
 
 **08. Prvý riadok**  
 ```bash
@@ -143,7 +143,7 @@ regex filter + print
 
 ---
 
-## 🧩 Kombinácie pravidiel
+## ⚙️ Kombinácie pravidiel
 
 **11. Cleanup logu**  
 ```bash
@@ -169,7 +169,7 @@ sekvenčné spracovanie pravidiel
 
 ---
 
-## 🧩 Regex operácie
+## 🧪 Regex operácie
 
 **13. Čísla**  
 ```bash
@@ -195,7 +195,7 @@ regex grouping
 
 ---
 
-## 🧩 System security
+## 🔐 System security
 
 **15. SSH failed login**  
 ```bash
@@ -218,7 +218,7 @@ capture group
 
 ---
 
-## 🧩 System monitoring
+## 📊 System monitoring
 
 **17. Disk usage**  
 ```bash
@@ -238,7 +238,7 @@ odstráni hlavičku
 
 ---
 
-## 🧩 Network analysis
+## 🌐 Network analysis
 
 **19. HTTP 404**  
 ```bash
@@ -258,7 +258,7 @@ skryje IP adresy
 
 ---
 
-## 🧩 Cron a systém
+## ⏱️ Cron a systém
 
 **21. Cron cleanup**  
 ```bash
