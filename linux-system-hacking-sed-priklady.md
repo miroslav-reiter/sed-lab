@@ -42,6 +42,66 @@ access.log
 
 ---
 
+## ⚙️ 🧠 INTERNÝ MODEL SED (DOPLNENÉ)
+
+sed nepracuje „na súbore“, ale na **stream-e riadkov**.
+
+Každý riadok prechádza stavmi:
+
+```text
+INPUT LINE
+   ↓
+PATTERN SPACE (pracovná pamäť riadku)
+   ↓
+APLIKÁCIA PRAVIDIEL (s///, d, p)
+   ↓
+OUTPUT
+   ↓
+NEXT LINE
+```
+
+📌 Dôležité:
+- sed nikdy neupravuje vstup priamo
+- vždy pracuje v „pattern space“ (RAM buffer riadku)
+
+---
+
+## ⚙️ 🧩 EXECUTION MODEL
+
+```text
+read line → pattern space → apply script → output → loop
+```
+
+Každý príkaz sed je:
+
+- FILTER (vyber)
+- TRANSFORM (zmena)
+- DELETE (odstránenie)
+
+---
+
+## 🧩 🧠 DECISION MODEL (grep vs sed vs awk)
+
+| Nástroj | Rola |
+|---|---|
+| grep | filter (nájdi riadky) |
+| sed | transform (zmeň riadky) |
+| awk | process (logika + stĺpce + výpočty) |
+
+---
+
+## 🔥 PIPELINE MODEL (REAL SOC / DEVOPS)
+
+```bash
+cat file.log | grep "ERROR" | sed 's/ERROR/CRITICAL/'
+```
+
+➡ grep = filter
+➡ sed = transform
+➡ awk = analýza (chýba tu, ale patrí do ďalšieho kroku)
+
+---
+
 ## 🧩 1. Základné nahrádzanie textu (s)
 
 ### Nahradenie reťazca
@@ -76,9 +136,6 @@ sed '1,5d' subor.txt
 
 ```bash
 sed '/debug/d'
-```
-
-```bash
 sed '/error/d'
 ```
 
@@ -187,12 +244,47 @@ sed -i.bak 's/http:/https:/g' urls.txt
 
 ---
 
-## 🚀 Zhrnutie
+## 🚀 13. ROZŠÍRENIE: SOC / SECURITY THINKING
 
-sed je nástroj na:
+sed sa v bezpečnosti používa hlavne na:
 
-- rýchle textové transformácie
 - log filtering
-- config cleanup
-- stream processing
-- shell pipeline operácie
+- anonymizáciu IP
+- cleanup incident logov
+- rýchlu extrakciu signálov
+
+Príklad anonymizácie:
+
+```bash
+sed -E 's/[0-9]{1,3}(\.[0-9]{1,3}){3}/XXX.XXX.XXX.XXX/g' access.log
+```
+
+---
+
+## 🚀 14. ROZŠÍRENIE: KEDY SED ZLYHÁ
+
+sed nie je vhodný pre:
+
+- JSON parsing → jq
+- štruktúrované dáta → python
+- komplexné agregácie → awk
+
+---
+
+## 🧠 15. ZHRNUTIE (MENTÁLNY MODEL)
+
+sed = STREAM TRANSFORM ENGINE
+
+- pracuje po riadkoch
+- nemá pamäť datasetu
+- mení text, nie dáta
+
+---
+
+## 🚀 FINÁLNY VIEW
+
+sed = rýchly nástroj na manipuláciu textu v stream-e
+
+awk = analýza a výpočty
+
+grep = filtrovanie
