@@ -4,35 +4,37 @@ Tento súbor obsahuje štandardizované príklady použitia nástroja `sed` v Li
 
 ---
 
-# MODEL SPRACOVANIA SED
+## 🧠 Model spracovania sed
 
 sed pracuje ako stream editor:
 
 INPUT → PATTERN SPACE → RULE → OUTPUT
 
 - spracovanie po riadkoch
-- bez potreby načítania celého súboru
-- bez štruktúry (line-based processing)
+- bez načítania celého súboru
+- line-based processing
 
 ---
 
-# TEXT TRANSFORMÁCIA
+## 🧩 Text transformácia
 
-01. Nahradenie reťazca
+**01. Nahradenie reťazca**  
+```bash
 sed 's/Linux/GNU Linux/' subor.txt
-
+```
 čo to robí:
 Nahradí prvý výskyt reťazca Linux v každom riadku.
 
 vysvetlenie:
 s/// je substitution operátor
-pattern space sa spracuje pre každý riadok
+pattern space sa spracuje po riadkoch
 
 ---
 
-02. Globálna náhrada
+**02. Globálna náhrada**  
+```bash
 sed 's/Linux/GNU Linux/g' subor.txt
-
+```
 čo to robí:
 Nahradí všetky výskyty Linux v riadku.
 
@@ -41,9 +43,10 @@ flag g znamená global replacement
 
 ---
 
-03. Mazanie riadku
+**03. Mazanie riadku**  
+```bash
 sed '3d' subor.txt
-
+```
 čo to robí:
 Odstráni tretí riadok.
 
@@ -52,9 +55,10 @@ d = delete pattern space
 
 ---
 
-04. Mazanie rozsahu
+**04. Mazanie rozsahu**  
+```bash
 sed '1,5d' subor.txt
-
+```
 čo to robí:
 Odstráni riadky 1 až 5.
 
@@ -63,11 +67,12 @@ range addressing (start,end)
 
 ---
 
-# FILTEROVANIE RIADKOV
+## 🧩 Filterovanie riadkov
 
-05. Filter podľa vzoru
+**05. Filter podľa vzoru**  
+```bash
 sed '/debug/d' app.log
-
+```
 čo to robí:
 Odstráni riadky obsahujúce debug.
 
@@ -76,9 +81,10 @@ regex match v adrese
 
 ---
 
-06. Prázdne riadky
+**06. Prázdne riadky**  
+```bash
 sed '/^$/d' subor.txt
-
+```
 čo to robí:
 Odstráni prázdne riadky.
 
@@ -87,34 +93,36 @@ vysvetlenie:
 
 ---
 
-07. Komentáre
+**07. Komentáre**  
+```bash
 sed '/^#/d' config.txt
-
+```
 čo to robí:
 Odstráni komentáre.
 
 vysvetlenie:
-comment filter
+filter komentárov
 
 ---
 
-# VÝPIS RIADKOV
+## 🧩 Výpis riadkov
 
-08. Prvý riadok
+**08. Prvý riadok**  
+```bash
 sed -n '1p' subor.txt
-
+```
 čo to robí:
 Vypíše prvý riadok.
 
 vysvetlenie:
--n disables auto print
-p prints pattern space
+-n vypne auto print, p vypíše pattern space
 
 ---
 
-09. Rozsah výpisu
+**09. Rozsah výpisu**  
+```bash
 sed -n '1,5p' subor.txt
-
+```
 čo to robí:
 Vypíše riadky 1 až 5.
 
@@ -123,46 +131,50 @@ range + print mode
 
 ---
 
-10. Pattern match
+**10. Pattern match**  
+```bash
 sed -n '/error/p' app.log
-
+```
 čo to robí:
 Vypíše riadky s error.
 
 vysvetlenie:
-regex filtering + print
+regex filter + print
 
 ---
 
-# KOMBINÁCIE PRAVIDIEL
+## 🧩 Kombinácie pravidiel
 
-11. Cleanup logu
+**11. Cleanup logu**  
+```bash
 sed '/debug/d; /^$/d' app.log
-
+```
 čo to robí:
 Odstráni debug a prázdne riadky.
 
 vysvetlenie:
-multiple rules in one script
+viac pravidiel v jednom skripte
 
 ---
 
-12. Replace + filter
+**12. Replace + filter**  
+```bash
 sed 's/ERROR/CRITICAL/g; /debug/d' app.log
-
+```
 čo to robí:
 Zmení ERROR a odstráni debug.
 
 vysvetlenie:
-sequential execution
+sekvenčné spracovanie pravidiel
 
 ---
 
-# REGEX OPERÁCIE
+## 🧩 Regex operácie
 
-13. Čísla
+**13. Čísla**  
+```bash
 sed -E 's/[0-9]+/NUM/g' subor.txt
-
+```
 čo to robí:
 Nahradí čísla.
 
@@ -171,30 +183,33 @@ extended regex
 
 ---
 
-14. IP adresy
+**14. IP adresy**  
+```bash
 sed -E 's/[0-9]{1,3}(\.[0-9]{1,3}){3}/IP/g' access.log
-
+```
 čo to robí:
 Maskuje IP adresy.
 
 vysvetlenie:
-regex groups
+regex grouping
 
 ---
 
-# SYSTEM SECURITY
+## 🧩 System security
 
-15. SSH failed login
+**15. SSH failed login**  
+```bash
 sed -n '/Failed password/p' auth.log
-
+```
 čo to robí:
 Zobrazí neúspešné login pokusy.
 
 ---
 
-16. Extrakcia IP
+**16. Extrakcia IP**  
+```bash
 sed -E 's/.*from ([0-9.]+).*/\1/' auth.log
-
+```
 čo to robí:
 Vytiahne IP adresu.
 
@@ -203,74 +218,67 @@ capture group
 
 ---
 
-# SYSTEM MONITORING
+## 🧩 System monitoring
 
-17. Disk usage
-
+**17. Disk usage**  
+```bash
 df -h | sed '1d'
-
+```
 čo to robí:
 odstráni header
 
 ---
 
-18. Process list
-
+**18. Process list**  
+```bash
 ps aux | sed '1d'
-
+```
 čo to robí:
 odstráni hlavičku
 
 ---
 
-# NETWORK ANALYSIS
+## 🧩 Network analysis
 
-19. HTTP 404
+**19. HTTP 404**  
+```bash
 sed -n '/ 404 /p' access.log
-
+```
 čo to robí:
 filtruje 404 requesty
 
 ---
 
-20. IP anonymizácia
+**20. IP anonymizácia**  
+```bash
 sed -E 's/[0-9]{1,3}(\.[0-9]{1,3}){3}/X.X.X.X/g' access.log
-
+```
 čo to robí:
 skryje IP adresy
 
 ---
 
-# CRON A SYSTÉM
+## 🧩 Cron a systém
 
-21. Cron cleanup
+**21. Cron cleanup**  
+```bash
 sed '/^#/d' /etc/crontab
-
+```
 čo to robí:
 odstráni komentáre
 
 ---
 
-22. Suspicious commands
+**22. Suspicious commands**  
+```bash
 sed -n '/curl\|wget\|bash/p' /etc/crontab
-
+```
 čo to robí:
-hľadá potenciálne nebezpečné príkazy
+hľadá podozrivé príkazy
 
 ---
 
-# LIMITÁCIE SED
-
-23. Kedy nepoužiť sed
-
-- JSON → jq
-- XML → xmllint
-- CSV → python
-- komplexná logika → awk
-
----
-
-# ZHRNUTIE
+## 🧠 Zhrnutie
 
 sed = stream transform engine
 awk = data processing engine
