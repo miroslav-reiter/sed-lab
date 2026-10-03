@@ -1,0 +1,5 @@
+Report.TXT
+FOTO.JPG
+Linux-Sed.MD
+README.md
+DATA.CSV
