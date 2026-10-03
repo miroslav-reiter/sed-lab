@@ -1,0 +1,2 @@
+Toto je velmi dlhy riadok ktory chceme rozdelit na viac casti podla hranice styriciatich znakov bez rozbitia slov.
+Druhy dlhy riadok sluzi na demonstraciu formatovania textu pomocou GNU sed a prikazov P a D.
