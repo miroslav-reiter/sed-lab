@@ -1,0 +1,5 @@
+Toto je bezny text bez opakovania.
+Najhorsie bolo slovo
+slovo opakovane cez dva riadky.
+Tu sa nic nedeje.
+Dalsi priklad obsahuje test test na jednom riadku.
