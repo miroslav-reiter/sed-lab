@@ -1,0 +1,5 @@
+Prvy bezny riadok
+Tento riadok obsahuje WORD
+Druhy bezny riadok
+WORD je aj na zaciatku tohto riadku
+Posledny bezny riadok
