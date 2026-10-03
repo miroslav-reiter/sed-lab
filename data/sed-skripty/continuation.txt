@@ -1,0 +1,6 @@
+Toto je \
+jeden dlhsi \
+riadok.
+Druhy \
+riadok.
+Samostatny riadok.
